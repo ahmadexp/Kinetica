@@ -19,7 +19,7 @@ void set3dcamera(float xpos,float ypos,float zpos,float xang,float yang,float za
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
 	//enable depth test
-	//glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);
 	//setup the camera
 	gluPerspective(fov,aspect,1.f,1000.f);
 	//glFrustum(

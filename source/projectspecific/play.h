@@ -88,6 +88,32 @@ void play(float gamespeed){
 			if(usejoystick==1){usejoystick=0;}else{usejoystick=1;}
 		}
 
+		if(usejoystick){	//Joystick control	
+
+	#ifdef _WIN32
+			if(joyGetPos(0,&joystick))	usejoystick=0;    //obtain joystick value and check the presence
+			else{
+				if((32768-(float)joystick.wYpos>1500)||(32768-(float)joystick.wYpos<-1500)){
+					playerzposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*cos(-camyang);
+					playeryposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*sin(camxang);
+					playerxposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*sin(-camyang);
+				}
+			}
+	#else
+			if(joystick == NULL){
+				joystick = SDL_JoystickOpen(0);
+				if(!joystick) usejoystick = 0;
+			}
+			if(joystick){
+				int sval = -SDL_JoystickGetAxis(joystick, 1); // Y axis, negate to match original direction
+				if((sval>1500)||(sval<-1500)){
+					playerzposmov -= sval * (0.03/32768.0f) * gamespeed * cos(camxang) * cos(-camyang);
+					playeryposmov -= sval * (0.03/32768.0f) * gamespeed * sin(camxang);
+					playerxposmov -= sval * (0.03/32768.0f) * gamespeed * cos(camxang) * sin(-camyang);
+				}
+			}
+	#endif
+		}
 		//GPS Minimap on ff
 		if(keystate[SDLK_g]==2){
 			if(showminimap==1){showminimap=0;}else{showminimap=1;}
@@ -257,21 +283,7 @@ void play(float gamespeed){
 	//	camyang=yaw*degreesinradian;
 	//	camzang=pitch*degreesinradian;
 
-	if(usejoystick){	//Joystick control	
 
-		if(joyGetPos(0,&joystick))	usejoystick=0;	//obtain joystick value and check the presence
-		else{
-			//if(((float)joystick.wXpos-32768>1500)||((float)joystick.wXpos-32768<-1500)) camyang+=((float)joystick.wXpos-32768)*(0.023/32768)*gamespeed;	
-			if((32768-(float)joystick.wYpos>1500)||(32768-(float)joystick.wYpos<-1500)){
-				playerzposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*cos(-camyang);
-				playeryposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*sin(camxang);
-				playerxposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*sin(-camyang);
-			}
-			//	playeryposmov+=(32768-(float)joystick.wYpos)*(JoyTransVel/32768)*sin(-camxang);
-			//	camxang=((float)joystick.wZpos-32768)*(45*radiansindegree/32768);	
-			//camxang=0*radiansindegree;
-		}
-	}
 
 	//head up on the ramp
 	//if(worldgrid[(int)(playerxpos/10)][(int)(playerypos/10)][(int)(playerzpos/10)][0]==ramp_tile)

@@ -17,7 +17,7 @@
               
             void main() 
             { 
-               vec2 tc = HmdWarp(gl_TexCoord[0]); 
+               vec2 tc = HmdWarp(gl_TexCoord[0].xy); 
                if (any(notEqual(clamp(tc, ScreenCenter-vec2(0.25,0.5), ScreenCenter+vec2(0.25, 0.5)) - tc, vec2(0.0, 0.0)))) 
                    gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); 
                else 

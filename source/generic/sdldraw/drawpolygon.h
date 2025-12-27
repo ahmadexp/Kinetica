@@ -17,7 +17,11 @@ void _HLine(SDL_Surface *Surface, Sint16 x1, Sint16 x2, Sint16 y, Uint32 Color){
 	if(x2>Surface->clip_maxx)
 		x2=Surface->clip_maxx;
 	#endif
-	SDL_Rect line = {x1,y,x2-x1+1,1};
+	SDL_Rect line;
+	line.x = (Sint16)x1;
+	line.y = (Sint16)y;
+	line.w = (Uint16)(x2 - x1 + 1);
+	line.h = (Uint16)1;
 	SDL_FillRect(Surface, &line, Color);
 	//SDL_Rect l;
 	//l.x=x1; l.y=y; l.w=x2-x1+1; l.h=1;

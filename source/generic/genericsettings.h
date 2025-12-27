@@ -9,6 +9,7 @@ bool showcursor;
 
 bool antialiasing;
 bool mipmapping;
+bool vrmode;
 
 //set the settings
 void loadgenericsettings(){
@@ -25,6 +26,7 @@ void loadgenericsettings(){
 	showcursor=(bool)(readfloatfromini((char*)"showcursor")!=0);
 	antialiasing=(bool)(readfloatfromini((char*)"antialiasing")!=0);
 	mipmapping=(bool)(readfloatfromini((char*)"mipmapping")!=0);
+    vrmode=(bool)(readfloatfromini((char*)"vrmode")!=0);
 
 	//calculate the screens aspect ratio
 	screena = screenw/screenh;

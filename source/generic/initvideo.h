@@ -11,15 +11,7 @@ void initopengl(){
 	SDL_WM_SetCaption( "TheKineticaEngin", NULL );				//Window Settings
 
 	//enable anti aliasing
-	if(antialiasing){
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
-		SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 4);
-		glEnable(GL_MULTISAMPLE);
-		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST );
-		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST );
-		glEnable(GL_LINE_SMOOTH);
-		glEnable(GL_POLYGON_SMOOTH);
-	}
+
 
 //	skybox = new SKYBOX();
 	
@@ -28,7 +20,11 @@ void initopengl(){
 	//Create Video Surface
 	//there seems to be a problem with opengl plus a screen width or height of zero
 	if(screenw==0 || screenh==0){
-		screen = SDL_SetVideoMode((int)screenw/2,(int)screenh,screenbpp,SDL_DOUBLEBUF);
+        if (vrmode) {
+		    screen = SDL_SetVideoMode((int)screenw/2,(int)screenh,screenbpp,SDL_DOUBLEBUF);
+        } else {
+            screen = SDL_SetVideoMode((int)screenw,(int)screenh,screenbpp,SDL_DOUBLEBUF);
+        }
 		screenw=(float)screen->w;
 		screenh=(float)screen->h;
 		screena = screenw/screenh;
@@ -38,8 +34,12 @@ void initopengl(){
 	if(fullscreen==1)
 		screen = SDL_SetVideoMode((int)screenw,(int)screenh,screenbpp,SDL_OPENGL|SDL_FULLSCREEN);
 		
-	if(fullscreen==0)
-		screen = SDL_SetVideoMode((int)screenw/2,(int)screenh,screenbpp,SDL_OPENGL);
+	if(fullscreen==0) {
+        if(vrmode)
+		    screen = SDL_SetVideoMode((int)screenw/2,(int)screenh,screenbpp,SDL_OPENGL);
+        else 
+            screen = SDL_SetVideoMode((int)screenw,(int)screenh,screenbpp,SDL_OPENGL);
+    }
 	if (!screen) { SDL_Quit(); exit(3); }
 	
 	SDL_GL_SwapBuffers();	
@@ -47,10 +47,16 @@ void initopengl(){
     //Size OpenGL to Video Surface
 
 	if(vp==1){
-    glViewport((int)screenw/2, 0, (int)screenw/2, (int)screenh);
+        if (vrmode)
+            glViewport((int)screenw/2, 0, (int)screenw/2, (int)screenh);
+        else 
+            glViewport(0, 0, (int)screenw, (int)screenh);
 	}
 	else{
-    glViewport(0, 0, (int)screenw/2, (int)screenh);
+        if (vrmode)
+            glViewport(0, 0, (int)screenw/2, (int)screenh);
+        else 
+            glViewport(0, 0, (int)screenw, (int)screenh);
     } 
 
 	glMatrixMode(GL_PROJECTION);
@@ -77,6 +83,16 @@ void initopengl(){
 	glFrontFace(GL_CCW);
 	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 	glAlphaFunc(GL_GREATER,0.0f);
+
+
+    // Apply antialiasing GL settings if enabled (now that we have a context)
+	if(antialiasing){
+		glEnable(GL_MULTISAMPLE);
+		glHint(GL_LINE_SMOOTH_HINT, GL_NICEST );
+		glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST );
+		glEnable(GL_LINE_SMOOTH);
+		glEnable(GL_POLYGON_SMOOTH);
+	}
 
 }
 

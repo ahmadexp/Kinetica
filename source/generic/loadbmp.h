@@ -1,11 +1,12 @@
 //http://www.codeproject.com/KB/cpp/endianness.aspx
+#include <cstdint>
 
-unsigned long EndianFlipUnsignedLong(unsigned long nLongNumber){
+uint32_t EndianFlipUnsignedLong(uint32_t nLongNumber){
    return (((nLongNumber&0x000000FF)<<24)+((nLongNumber&0x0000FF00)<<8)+
    ((nLongNumber&0x00FF0000)>>8)+((nLongNumber&0xFF000000)>>24));
 }
 
-long EndianFlipLong(long nLongNumber){
+int32_t EndianFlipLong(int32_t nLongNumber){
    return (((nLongNumber&0x000000FF)<<24)+((nLongNumber&0x0000FF00)<<8)+
    ((nLongNumber&0x00FF0000)>>8)+((nLongNumber&0xFF000000)>>24));
 }
@@ -21,21 +22,21 @@ short EndianFlipShort(short nValue){
 GLuint loadbmp(char* filename,bool mipmap){
 
 	unsigned short Type;          // signature - 'BM'
-	unsigned long  Size;          // file size in bytes
+	uint32_t  Size;          // file size in bytes
 	unsigned short Reserved1;     // 0
 	unsigned short Reserved2;     // 0
-	unsigned long  OffBits;       // offset to bitmap
-	unsigned long  StructSize;    // size of this struct (40)
-	unsigned long  Width;         // bmap width in pixels
-	unsigned long  Height;        // bmap height in pixels
+	uint32_t  OffBits;       // offset to bitmap
+	uint32_t  StructSize;    // size of this struct (40)
+	uint32_t  Width;         // bmap width in pixels
+	uint32_t  Height;        // bmap height in pixels
 	unsigned short Planes;        // num planes - always 1
 	unsigned short BitCount;      // bits per pixel
-	unsigned long  Compression;   // compression flag
-	unsigned long  SizeImage;     // image size in bytes
-	long           XPelsPerMeter; // horz resolution
-	long           YPelsPerMeter; // vert resolution
-	unsigned long  ClrUsed;       // 0 -> color table size
-	unsigned long  ClrImportant;  // important color count
+	uint32_t  Compression;   // compression flag
+	uint32_t  SizeImage;     // image size in bytes
+	int32_t           XPelsPerMeter; // horz resolution
+	int32_t           YPelsPerMeter; // vert resolution
+	uint32_t  ClrUsed;       // 0 -> color table size
+	uint32_t  ClrImportant;  // important color count
 
 	unsigned char	*pPixels = NULL;
 
@@ -47,21 +48,21 @@ GLuint loadbmp(char* filename,bool mipmap){
 		return NULL;     //ahmad
 
 	fread(&Type,sizeof(unsigned short),1,fp);
-	fread(&Size,sizeof(unsigned long),1,fp);
+	fread(&Size,sizeof(uint32_t),1,fp);
 	fread(&Reserved1,sizeof(unsigned short),1,fp);
 	fread(&Reserved2,sizeof(unsigned short),1,fp);
-	fread(&OffBits,sizeof(unsigned long),1,fp);
-	fread(&StructSize,sizeof(unsigned long),1,fp);
-	fread(&Width,sizeof(unsigned long),1,fp);
-	fread(&Height,sizeof(unsigned long),1,fp);
+	fread(&OffBits,sizeof(uint32_t),1,fp);
+	fread(&StructSize,sizeof(uint32_t),1,fp);
+	fread(&Width,sizeof(uint32_t),1,fp);
+	fread(&Height,sizeof(uint32_t),1,fp);
 	fread(&Planes,sizeof(unsigned short),1,fp);
 	fread(&BitCount,sizeof(unsigned short),1,fp);
-	fread(&Compression,sizeof(unsigned long),1,fp);
-	fread(&SizeImage,sizeof(unsigned long),1,fp);
-	fread(&XPelsPerMeter,sizeof(long),1,fp);
-	fread(&YPelsPerMeter,sizeof(long),1,fp);
-	fread(&ClrUsed,sizeof(unsigned long),1,fp);
-	fread(&ClrImportant,sizeof(unsigned long),1,fp);
+	fread(&Compression,sizeof(uint32_t),1,fp);
+	fread(&SizeImage,sizeof(uint32_t),1,fp);
+	fread(&XPelsPerMeter,sizeof(int32_t),1,fp);
+	fread(&YPelsPerMeter,sizeof(int32_t),1,fp);
+	fread(&ClrUsed,sizeof(uint32_t),1,fp);
+	fread(&ClrImportant,sizeof(uint32_t),1,fp);
 
 	pPixels = new unsigned char[Width * Height * BitCount];
 	fread(pPixels, BitCount, Width * Height, fp);

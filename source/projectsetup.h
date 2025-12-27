@@ -19,7 +19,15 @@ bool autoexit=0;
 bool showinfo=1;
 bool usejoystick=0;
 
+#ifndef _WIN32
+#include "SDL_joystick.h"
+#endif
+
+#ifdef _WIN32
 JOYINFO joystick;
+#else
+SDL_Joystick *joystick = NULL;
+#endif
 
 int collectablesfound=0;
 
@@ -81,9 +89,6 @@ GLuint fragment_shader;
 //...
 
 //#include "glext.h"
-
-FILE _iob[] = { *stdin, *stdout, *stderr };
-extern "C" FILE * __cdecl __iob_func(void) { return _iob; }
 
 #include "tilenames.h"
 #include "projectspecific/tiles.h"

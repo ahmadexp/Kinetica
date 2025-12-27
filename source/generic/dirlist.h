@@ -1,16 +1,16 @@
+#include <dirent.h>
+#include <sys/stat.h>
+
 const int maxdirentrys = 500;
 class direntry{
 	public:
 		char filename[256];
 		bool folder;
 		int extrainfoint;
-		direntry(char* filename2);};
-direntry::direntry(char* filename2){
-	sprintf_s(filename,"%s",filename2);
-	folder=0;
-	extrainfoint=0;}
-direntry *direntrys[maxdirentrys];
-int n_direntrys = 0;
+		direntry(const char* filename2){ snprintf(filename, sizeof(filename), "%s", filename2); folder=0; extrainfoint=0; }
+};
+static direntry *direntrys[maxdirentrys];
+static int n_direntrys = 0;
 
 void deletedirentry(int number){
 	delete direntrys[number];
@@ -20,19 +20,24 @@ void deletedirentry(int number){
 	n_direntrys=n_direntrys-1;
 }
 
-void dirlist(char* directory){
+void dirlist(const char* directory){
 	while(n_direntrys)deletedirentry(0);
-	char filename[MAX_PATH];
-	WIN32_FIND_DATAA findFileData;
-	HANDLE hFind = FindFirstFileA(directory,&findFileData);
-	if(hFind != INVALID_HANDLE_VALUE){
-		bool endoflist=0;
-		while(endoflist==0){
-			sprintf_s(filename,"%s",findFileData.cFileName);
-			direntrys[n_direntrys] = new direntry((char*)filename);
-			if(findFileData.dwFileAttributes == FILE_ATTRIBUTE_DIRECTORY)direntrys[n_direntrys]->folder=1;
-			n_direntrys++;
-			if(FindNextFileA(hFind,&findFileData)==0)endoflist=1;
+	DIR *d = opendir(directory);
+	if(!d) return;
+	struct dirent *ent;
+	while((ent = readdir(d))){
+		if(n_direntrys>=maxdirentrys) break;
+		direntrys[n_direntrys] = new direntry(ent->d_name);
+		// detect folder
+		if(ent->d_type==DT_DIR) direntrys[n_direntrys]->folder=1;
+		else {
+			// fallback: stat
+			char pathbuf[PATH_MAX];
+			snprintf(pathbuf, sizeof(pathbuf), "%s/%s", directory, ent->d_name);
+			struct stat st;
+			if(stat(pathbuf, &st)==0) if(S_ISDIR(st.st_mode)) direntrys[n_direntrys]->folder=1;
 		}
+		n_direntrys++;
 	}
+	closedir(d);
 }

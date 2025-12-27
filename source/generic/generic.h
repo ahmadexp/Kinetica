@@ -3,8 +3,8 @@
 //#define NO_SDL_GLEXT
 bool useshaders = true;
 
-#include <GL\glew.h>
-#include <GL\glut.h>
+#include <GL/glew.h>
+#include <GL/glut.h>
 
 const float PI=3.14159265f;
 const float degreesinradian=360/(2*PI); 
@@ -36,15 +36,21 @@ enum Eye {
 
 bool shading_enabled = false;
 
+#ifdef _WIN32
 #define uglGetProcAddress(x) wglGetProcAddress(x)
-
 #include <windows.h>
-#include <sdl.h>
+#include <SDL.h>
 #include <SDL_image.h>
 #include <SDL_mixer.h>
-#include <sdl_opengl.h>
+#else
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <unistd.h>
+#endif
 
 #include <stdio.h>
+#include "../include/compat.h"
 #include <math.h>
 #include <time.h>
 #include <vector>
@@ -61,18 +67,23 @@ using std::ifstream;
 
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
 #include <malloc.h>
+#elif defined(__APPLE__)
+#include <malloc/malloc.h>
+#endif
 
+#ifdef _WIN32
 //to read the joystick playing wave clips 
-#include <Windows.h>
 #include <MMSystem.h>
 #pragma comment(lib,"Winmm.lib")
+#endif
 
 #include <stdio.h>
 
 GLuint cube_map_texture_ID;
 
-#include "skybox.h"
+#include "sky/skybox.h"
 //SKYBOX * skybox; 
 
 //super generic

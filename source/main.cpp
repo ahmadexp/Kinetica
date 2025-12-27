@@ -9,7 +9,9 @@
 #include "projectloop.h"
 #include "projectshaders.h"
 
-#pragma comment(lib,"libovr.lib") 
+#ifdef _MSC_VER
+#pragma comment(lib,"libovr.lib")
+#endif
 
 int main(int argc,char **argv){
 
@@ -18,7 +20,7 @@ int main(int argc,char **argv){
 	}
 	System::Init(Log::ConfigureDefaultLog(LogMask_All)); 
 
-	load_OVR(); 
+	if(vrmode) load_OVR(); 
 
 	loadgenericsettings();									//load the generic settings
 
@@ -29,11 +31,13 @@ int main(int argc,char **argv){
 
 	projectsetup();											//setup for the project
 
-	updateinput();										    //get the initial value of the HMD
-	Start_yaw=camyang-(90*radiansindegree);
-
-	initShaders(file2string("k.vert"), file2string("k.frag"));
-	initFBO(screenw, screenh);
+    if(vrmode) {
+	    updateinput();										    //get the initial value of the HMD
+	    Start_yaw=camyang-(90*radiansindegree);
+    
+	    initShaders(file2string("k.vert"), file2string("k.frag"));
+	    initFBO(screenw, screenh);
+    }
 	
 	//game loop
 	while(!shutdownprogram)
@@ -43,7 +47,10 @@ int main(int argc,char **argv){
 
 		SDL_PumpEvents();									//get what events have occured
 
-		updateinput();										//get controller input
+        if(vrmode)
+		    updateinput();										//get controller input
+        else
+            updateinput(); // Process standard input
 
 		gamespeed=60.f/dash_framerate;
 		if(gamespeed<0.2f)gamespeed=0.2f;

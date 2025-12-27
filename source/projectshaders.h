@@ -48,7 +48,7 @@ const float    YawInitial  = 3.141592f;
 
 void error(string msg)
 {
-	fprintf(stderr, "Error: '%s'\n", msg);
+	fprintf(stderr, "Error: '%s'\n", msg.c_str());
 }
 
 void error(GLenum res)
@@ -301,40 +301,46 @@ void renderToScreen()
 
 static void RenderScene()
 {
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    if (vrmode) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
+        glMatrixMode(GL_PROJECTION);
+        glLoadIdentity();
+        glMatrixMode(GL_MODELVIEW);
+        glLoadIdentity();
 
-	beginOffScreenRenderPass();
+        beginOffScreenRenderPass();
 
-	glEnable(GL_SCISSOR_TEST);
+        glEnable(GL_SCISSOR_TEST);
 
-	//render left half
-	glViewport(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
-	glScissor(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
-	
-	drawworld(Left);
-//	drawhud();
+        //render left half
+        glViewport(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
+        glScissor(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
+        
+        drawworld(Left);
+    //	drawhud();
 
-	glDisable(GL_SCISSOR_TEST);
+        glDisable(GL_SCISSOR_TEST);
 
-	glEnable(GL_SCISSOR_TEST);
-	//render right half
-	glViewport((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
-	glScissor((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
-	drawworld(Right);
-//	drawhud();
+        glEnable(GL_SCISSOR_TEST);
+        //render right half
+        glViewport((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
+        glScissor((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
+        drawworld(Right);
+    //	drawhud();
 
-	glDisable(GL_SCISSOR_TEST);
+        glDisable(GL_SCISSOR_TEST);
 
-	//apply post distortion via shaders
-	glViewport(0, 0, screenw, screenh);
-	renderToScreen();
+        //apply post distortion via shaders
+        glViewport(0, 0, screenw, screenh);
+        renderToScreen();
 
-	glDisable(GL_SCISSOR_TEST);
+        glDisable(GL_SCISSOR_TEST);
+    } else {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glViewport(0, 0, screenw, screenh);
+        drawworld(Left); // Use Left (or similar) as the "center" camera for now
+    }
 }
 
 void load_OVR(void){

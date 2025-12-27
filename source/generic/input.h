@@ -45,22 +45,34 @@ void updateinput(){
 	SDL_Event event;
 
 	for(int a=0;a<keycount;a++)if(keystate[a]==2)keystate[a]=1;
-	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_KEYDOWN)))
-		keystate[event.key.keysym.sym]=2;
-	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_KEYUP)))
-		keystate[event.key.keysym.sym]=0;
+	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_KEYDOWN))) {
+        if (event.key.keysym.sym < keycount && event.key.keysym.sym >= 0)
+		    keystate[event.key.keysym.sym]=2;
+    }
+	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_KEYUP))) {
+        if (event.key.keysym.sym < keycount && event.key.keysym.sym >= 0)
+		    keystate[event.key.keysym.sym]=0;
+    }
 	
 	for(int a=0;a<buttoncount;a++)if(buttonstate[a]==2)buttonstate[a]=1;
-	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_JOYBUTTONDOWN)))
-		buttonstate[event.jbutton.button]=2;
-	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_JOYBUTTONUP)))
-		buttonstate[event.jbutton.button]=0;
+	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_JOYBUTTONDOWN))) {
+        if (event.jbutton.button < buttoncount)
+		    buttonstate[event.jbutton.button]=2;
+    }
+	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_JOYBUTTONUP))) {
+        if (event.jbutton.button < buttoncount)
+		    buttonstate[event.jbutton.button]=0;
+    }
 
 	for(int a=0;a<mousecount;a++)if(mousestate[a]==2)mousestate[a]=1;
-	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_MOUSEBUTTONDOWN)))
-		mousestate[event.button.button]=2;
-	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_MOUSEBUTTONUP)))
-		mousestate[event.button.button]=0;
+	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_MOUSEBUTTONDOWN))) {
+        if (event.button.button < mousecount)
+		    mousestate[event.button.button]=2;
+    }
+	while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_EVENTMASK(SDL_MOUSEBUTTONUP))) {
+        if (event.button.button < mousecount)
+    		mousestate[event.button.button]=0;
+    }
 
 	if(centercursor){
 		//SDL_WM_GrabInput(SDL_GRAB_ON);

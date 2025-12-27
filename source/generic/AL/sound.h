@@ -98,13 +98,12 @@ void init_sound(void){
 	alGenBuffers(NUM_BUFFERS, g_Buffers);  // Generate Buffers
 
 	// Load in samples to be used by Test functions
-	ALsizei size,freq;
-	ALenum	format;
-	ALvoid	*data;
-	ALboolean loop;
-		
-	// Load WaveNames[which_wave]
-	alutLoadWAVFile((ALbyte*)"Media/ding.wav",&format,&data,&size,&freq,&loop);
+    ALsizei size,freq;
+    ALenum	format;
+    ALvoid	*data;
+        
+    // Load WaveNames[which_wave] - use 5-arg alutLoadWAVFile on macOS
+    alutLoadWAVFile((ALbyte*)"Media/ding.wav", &format, &data, &size, &freq);
 	// an example of error checking
 	if ((error = alGetError()) != AL_NO_ERROR)
 	{
