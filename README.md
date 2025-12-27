@@ -12,7 +12,7 @@ brew install sdl sdl_image sdl_mixer glew
 Build and run:
 
 ```
-cd "Kinetica 0.6"
+cd Kinetica
 make
 ./Kinetica
 ```
