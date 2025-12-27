@@ -19,7 +19,7 @@ void setupdashonoff(){
 
 void dashonoff(float dashspeed){
 
-	if(keystate[SDLK_ESCAPE]==2){
+	if(keystate[SDL_SCANCODE_ESCAPE]==2){
 		if(dashon==0){
 			dashon=1;
 			if(dashonpercent==0){

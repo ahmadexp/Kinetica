@@ -45,7 +45,7 @@ int main(int argc,char **argv){
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);	//clear the screen
 
-		SDL_PumpEvents();									//get what events have occured
+		//SDL_PumpEvents();									//get what events have occured
 
         if(vrmode)
 		    updateinput();										//get controller input
@@ -63,12 +63,13 @@ int main(int argc,char **argv){
 
 		dashloop();
 
-		SDL_GL_SwapBuffers();
+		SDL_GL_SwapWindow(window);
 
 		//clear out left over events and shut down when appropriate
-		SDL_Event event;
+        // Handled in updateinput() now.
+		/*SDL_Event event;
 		while(SDL_PeepEvents(&event,1,SDL_GETEVENT,SDL_ALLEVENTS)>0)
-			if(event.type==SDL_QUIT)shutdownprogram=1;
+			if(event.type==SDL_QUIT)shutdownprogram=1;*/
 	}
 
 	// Clean up

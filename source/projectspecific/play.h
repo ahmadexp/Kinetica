@@ -1,28 +1,28 @@
 void play(float gamespeed){
 
 		//decrease view range
-		if(keystate[SDLK_1]==2){
+		if(keystate[SDL_SCANCODE_1]==2){
 			worldtileviewrange-=1;
 			if(worldtileviewrange<1)worldtileviewrange=1;
 		}
 		//increase view range
-		if(keystate[SDLK_2]==2){
+		if(keystate[SDL_SCANCODE_2]==2){
 			worldtileviewrange+=1;
 			if(worldtileviewrange>60)worldtileviewrange=60;
 		}
 
-		if(keystate[SDLK_v]==2){
+		if(keystate[SDL_SCANCODE_V]==2){
 			PositionTest();
 		}
 
 		//decrease view range
-		if(keystate[SDLK_b]==2){
+		if(keystate[SDL_SCANCODE_B]==2){
 			test-=1;
 			if(test<1)test=1;
 			loadtiles();
 		}
 		//increase view range
-		if(keystate[SDLK_n]==2){
+		if(keystate[SDL_SCANCODE_N]==2){
 			test+=1;
 			if(test>60)test=60;
 			loadtiles();
@@ -31,60 +31,60 @@ void play(float gamespeed){
 
 
 		//textures on off
-		if(keystate[SDLK_3]==2){
+		if(keystate[SDL_SCANCODE_3]==2){
 			if(usetextures){usetextures=0;}else{usetextures=1;}
 		}
 		//ghost mode on off
-		if(keystate[SDLK_4]==2){
+		if(keystate[SDL_SCANCODE_4]==2){
 			if(ghostmode==1){ghostmode=0;}else{ghostmode=1;}
 		}
 		//previous tile
-		if(keystate[SDLK_5]==2){
+		if(keystate[SDL_SCANCODE_5]==2){
 			worldgrid[playerxgridpos][playerygridpos][playerzgridpos][0]-=1;
 			if(worldgrid[playerxgridpos][playerygridpos][playerzgridpos][0]<0)
 				worldgrid[playerxgridpos][playerygridpos][playerzgridpos][0]+=worldtilecount;
 		}
 		//next tile
-		if(keystate[SDLK_6]==2){
+		if(keystate[SDL_SCANCODE_6]==2){
 			worldgrid[playerxgridpos][playerygridpos][playerzgridpos][0]+=1;
 			if(worldgrid[playerxgridpos][playerygridpos][playerzgridpos][0]>worldtilecount-1)
 				worldgrid[playerxgridpos][playerygridpos][playerzgridpos][0]-=worldtilecount;
 		}
 		//rotate tile
-		if(keystate[SDLK_7]==2){
+		if(keystate[SDL_SCANCODE_7]==2){
 			worldgrid[playerxgridpos][playerygridpos][playerzgridpos][1]+=1;
 			if(worldgrid[playerxgridpos][playerygridpos][playerzgridpos][1]>3)
 				worldgrid[playerxgridpos][playerygridpos][playerzgridpos][1]-=4;
 		}
 		//save everything
-		if(keystate[SDLK_8]==2){
+		if(keystate[SDL_SCANCODE_8]==2){
 //			saveworldgrid();
 		//	save();
 		}
 		//load everything
-		if(keystate[SDLK_9]==2){
+		if(keystate[SDL_SCANCODE_9]==2){
 //			loadworldgrid();
 		//	load();
 		}
 
 
 		//Mouse on off
-		if(keystate[SDLK_m]==2){
+		if(keystate[SDL_SCANCODE_M]==2){
 			if(usemouse==1){usemouse=0;}else{usemouse=1;/*cursorx[0]=(int)screenh/2;cursory[0]=(int)screenw/2;*/}
 		}
 
 		//Player on off
-		if(keystate[SDLK_p]==2){
+		if(keystate[SDL_SCANCODE_P]==2){
 			if(showplayer==1){showplayer=0;}else{showplayer=1;}
 		}
 
 		//Autoexit on off
-		if(keystate[SDLK_e]==2){
+		if(keystate[SDL_SCANCODE_E]==2){
 			if(autoexit==1){autoexit=0;}else{autoexit=1;}
 		}
 
 		//Joystick on off
-		if(keystate[SDLK_j]==2){
+		if(keystate[SDL_SCANCODE_J]==2){
 			if(usejoystick==1){usejoystick=0;}else{usejoystick=1;}
 		}
 
@@ -115,12 +115,12 @@ void play(float gamespeed){
 	#endif
 		}
 		//GPS Minimap on ff
-		if(keystate[SDLK_g]==2){
+		if(keystate[SDL_SCANCODE_G]==2){
 			if(showminimap==1){showminimap=0;}else{showminimap=1;}
 		}
 
 		//user shaders
-		if(keystate[SDLK_x]==2)
+		if(keystate[SDL_SCANCODE_X]==2)
 		{
 			if(useshaders)
 			{
@@ -135,7 +135,7 @@ void play(float gamespeed){
 		}
 
 		//Quit the game
-		if(keystate[SDLK_q]==2)shutdownprogram=1;
+		if(keystate[SDL_SCANCODE_Q]==2)shutdownprogram=1;
 
 
 	//update entities
@@ -223,16 +223,16 @@ void play(float gamespeed){
 		float movespeed=0;
 		float moveangle=0;
 		bool up=0,down=0,left=0,right=0;
-		if(keystate[SDLK_w]|keystate[SDLK_UP])up=1;
-		if(keystate[SDLK_s]|keystate[SDLK_DOWN])down=1;
+		if(keystate[SDL_SCANCODE_W]|keystate[SDL_SCANCODE_UP])up=1;
+		if(keystate[SDL_SCANCODE_S]|keystate[SDL_SCANCODE_DOWN])down=1;
 		//to turn sideways left and right
-		if(keystate[SDLK_a]|keystate[SDLK_LEFT])left=1;
-		if(keystate[SDLK_d]|keystate[SDLK_RIGHT])right=1;
+		if(keystate[SDL_SCANCODE_A]|keystate[SDL_SCANCODE_LEFT])left=1;
+		if(keystate[SDL_SCANCODE_D]|keystate[SDL_SCANCODE_RIGHT])right=1;
 
-		if(keystate[SDLK_LEFT])
+		if(keystate[SDL_SCANCODE_LEFT])
 		camyang-=0.01f*gamespeed;
 
-		if(keystate[SDLK_RIGHT])
+		if(keystate[SDL_SCANCODE_RIGHT])
 		camyang+=0.01f*gamespeed;
 
 		moveangle=atan2((float)right-(float)left,(float)up-(float)down);
@@ -258,8 +258,8 @@ void play(float gamespeed){
 		float movespeed=0;
 		float moveangle=0;
 		bool up=0,down=0;
-		if(keystate[SDLK_UP])up=1;
-		if(keystate[SDLK_DOWN])down=1;
+		if(keystate[SDL_SCANCODE_UP])up=1;
+		if(keystate[SDL_SCANCODE_DOWN])down=1;
 		moveangle=atan2(0,(float)up-(float)down);
 		movespeed=dist2d(0,(float)up-(float)down,0,0);
 		if(movespeed>1)movespeed=1;
@@ -271,10 +271,10 @@ void play(float gamespeed){
 				playerzposmov-=movespeed*cos(camyang+moveangle)*0.04f*gamespeed;
 			}
 		}
-		if(keystate[SDLK_LEFT])
+		if(keystate[SDL_SCANCODE_LEFT])
 		camyang-=0.02f*gamespeed;
 
-		if(keystate[SDLK_RIGHT])
+		if(keystate[SDL_SCANCODE_RIGHT])
 		camyang+=0.02f*gamespeed;		
 
 	}

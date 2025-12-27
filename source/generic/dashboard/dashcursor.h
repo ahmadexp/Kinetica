@@ -33,7 +33,7 @@ void dashcursors(){
 	for(int a=0;a<4;a++)
 		dashusecursor[a]=0;
 
-	if(SDL_GetAppState() & SDL_APPMOUSEFOCUS)dashusecursor[0]=1;
+	if(SDL_GetWindowFlags(window) & SDL_WINDOW_MOUSE_FOCUS)dashusecursor[0]=1;
 
 	if(dashusecursors)	if(dashusecursor[0])dashdrawcursor(cursorx[0],cursory[0],0);
 		

@@ -20,7 +20,8 @@ bool showinfo=1;
 bool usejoystick=0;
 
 #ifndef _WIN32
-#include "SDL_joystick.h"
+// SDL2 includes joystick in SDL.h usually, but ensuring:
+#include <SDL2/SDL_joystick.h>
 #endif
 
 #ifdef _WIN32

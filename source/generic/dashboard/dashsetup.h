@@ -74,8 +74,10 @@ void dashsetup(){
 	//dash_sprite = SDL_DisplayFormatAlpha( dash_sprite );
 	//SDL_SetAlpha(tempsurface,SDL_SRCALPHA,255);
 	//SDL_SetAlpha(dash_sprite,SDL_SRCALPHA,255);
-	SDL_SetAlpha(tempsurface,SDL_SRCALPHA|SDL_RLEACCEL,255);
-	SDL_SetAlpha(dash_sprite,SDL_SRCALPHA|SDL_RLEACCEL,255);
+	SDL_SetSurfaceBlendMode(tempsurface, SDL_BLENDMODE_BLEND);
+    SDL_SetSurfaceAlphaMod(tempsurface, 255);
+    SDL_SetSurfaceBlendMode(dash_sprite, SDL_BLENDMODE_BLEND);
+    SDL_SetSurfaceAlphaMod(dash_sprite, 255);
 	apply_surface(0,0,tempsurface,dash_sprite,NULL);
 	SDL_FreeSurface(tempsurface);
 	dash_texture=maketexturefromsurface(dash_sprite,0);

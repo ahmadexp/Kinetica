@@ -3,7 +3,7 @@ SDL_Surface *IMG_LoadOptimize( std::string filename ){
 	SDL_Surface* optimizedImage = NULL; 
 	loadedImage = IMG_Load( filename.c_str() ); 
 	if( loadedImage != NULL ){
-		optimizedImage = SDL_DisplayFormat( loadedImage );
+		optimizedImage = SDL_ConvertSurfaceFormat( loadedImage, SDL_PIXELFORMAT_RGBA8888, 0 );
 		SDL_FreeSurface( loadedImage );
 	} 
 	return optimizedImage;
@@ -14,9 +14,9 @@ SDL_Surface *IMG_LoadOptimizeWithColorKey( std::string filename ){
 	SDL_Surface* optimizedImage = NULL; 
 	loadedImage = IMG_Load( filename.c_str() ); 
 	if( loadedImage != NULL ){
-		optimizedImage = SDL_DisplayFormat( loadedImage );
+		optimizedImage = SDL_ConvertSurfaceFormat( loadedImage, SDL_PIXELFORMAT_RGBA8888, 0 );
 		Uint32 colorkey = SDL_MapRGB( optimizedImage->format, 0, 0xFF, 0xFF );
-		SDL_SetColorKey( optimizedImage, SDL_SRCCOLORKEY, colorkey );
+		SDL_SetColorKey( optimizedImage, SDL_TRUE, colorkey );
 		SDL_FreeSurface( loadedImage );
 	} 
 	return optimizedImage;
@@ -27,7 +27,7 @@ SDL_Surface *IMG_LoadOptimizeAlpha( std::string filename ){
 	SDL_Surface* optimizedImage = NULL; 
 	loadedImage = IMG_Load( filename.c_str() ); 
 	if( loadedImage != NULL ){
-		optimizedImage = SDL_DisplayFormatAlpha( loadedImage );
+		optimizedImage = SDL_ConvertSurfaceFormat( loadedImage, SDL_PIXELFORMAT_RGBA8888, 0 );
 		SDL_FreeSurface( loadedImage );
 	} 
 	return optimizedImage;
