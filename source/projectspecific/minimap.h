@@ -148,7 +148,7 @@ void genminimap(){
 	fclose(fp);*/
 	///////////////////////////////////////////////////////////////////////////save mipmap
 
-	delete texturedata;
+	delete[] texturedata;
 
 	minimaptexturexuse=(float)worldgridsizex/(float)xsize;
 	minimaptexturezuse=(float)worldgridsizez/(float)zsize;

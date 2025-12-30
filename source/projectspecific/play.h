@@ -1,14 +1,15 @@
 void play(float gamespeed){
 
 		//decrease view range
-		if(keystate[SDL_SCANCODE_1]==2){
-			worldtileviewrange-=1;
-			if(worldtileviewrange<1)worldtileviewrange=1;
+		//decrease FOV
+		if(keystate[SDL_SCANCODE_1]==2 || keystate[SDL_SCANCODE_1]==1){
+			fov-=1.0f*gamespeed;
+			if(fov<10)fov=10;
 		}
-		//increase view range
-		if(keystate[SDL_SCANCODE_2]==2){
-			worldtileviewrange+=1;
-			if(worldtileviewrange>60)worldtileviewrange=60;
+		//increase FOV
+		if(keystate[SDL_SCANCODE_2]==2 || keystate[SDL_SCANCODE_2]==1){
+			fov+=1.0f*gamespeed;
+			if(fov>170)fov=170;
 		}
 
 		if(keystate[SDL_SCANCODE_V]==2){
@@ -88,32 +89,6 @@ void play(float gamespeed){
 			if(usejoystick==1){usejoystick=0;}else{usejoystick=1;}
 		}
 
-		if(usejoystick){	//Joystick control	
-
-	#ifdef _WIN32
-			if(joyGetPos(0,&joystick))	usejoystick=0;    //obtain joystick value and check the presence
-			else{
-				if((32768-(float)joystick.wYpos>1500)||(32768-(float)joystick.wYpos<-1500)){
-					playerzposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*cos(-camyang);
-					playeryposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*sin(camxang);
-					playerxposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*sin(-camyang);
-				}
-			}
-	#else
-			if(joystick == NULL){
-				joystick = SDL_JoystickOpen(0);
-				if(!joystick) usejoystick = 0;
-			}
-			if(joystick){
-				int sval = -SDL_JoystickGetAxis(joystick, 1); // Y axis, negate to match original direction
-				if((sval>1500)||(sval<-1500)){
-					playerzposmov -= sval * (0.03/32768.0f) * gamespeed * cos(camxang) * cos(-camyang);
-					playeryposmov -= sval * (0.03/32768.0f) * gamespeed * sin(camxang);
-					playerxposmov -= sval * (0.03/32768.0f) * gamespeed * cos(camxang) * sin(-camyang);
-				}
-			}
-	#endif
-		}
 		//GPS Minimap on ff
 		if(keystate[SDL_SCANCODE_G]==2){
 			if(showminimap==1){showminimap=0;}else{showminimap=1;}
@@ -242,8 +217,8 @@ void play(float gamespeed){
 		if(ghostmode)
 		movein3dspace(playerxposmov,playeryposmov,playerzposmov,camyang,camxang,movespeed*0.2f*gamespeed);
 		else{
-			playerxposmov+=movespeed*cos(camyang+moveangle)*0.04f*gamespeed;
-			playerzposmov+=movespeed*sin(camyang+moveangle)*0.04f*gamespeed;
+			playerxposmov+=movespeed*sin(camyang+moveangle)*0.04f*gamespeed;
+			playerzposmov-=movespeed*cos(camyang+moveangle)*0.04f*gamespeed;
 			}
 		}
 
@@ -283,7 +258,25 @@ void play(float gamespeed){
 	//	camyang=yaw*degreesinradian;
 	//	camzang=pitch*degreesinradian;
 
+	if(usejoystick){	//Joystick control	
 
+#ifdef _WIN32
+		if(joyGetPos(0,&joystick))	usejoystick=0;	//obtain joystick value and check the presence
+		else{
+			//if(((float)joystick.wXpos-32768>1500)||((float)joystick.wXpos-32768<-1500)) camyang+=((float)joystick.wXpos-32768)*(0.023/32768)*gamespeed;	
+			if((32768-(float)joystick.wYpos>1500)||(32768-(float)joystick.wYpos<-1500)){
+				playerzposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*cos(-camyang);
+				playeryposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*sin(camxang);
+				playerxposmov-=(32768-(float)joystick.wYpos)*(0.03/32768)*gamespeed*cos(camxang)*sin(-camyang);
+			}
+			//	playeryposmov+=(32768-(float)joystick.wYpos)*(JoyTransVel/32768)*sin(-camxang);
+			//	camxang=((float)joystick.wZpos-32768)*(45*radiansindegree/32768);	
+			//camxang=0*radiansindegree;
+		}
+#else
+        usejoystick=0;
+#endif
+	}
 
 	//head up on the ramp
 	//if(worldgrid[(int)(playerxpos/10)][(int)(playerypos/10)][(int)(playerzpos/10)][0]==ramp_tile)
@@ -304,7 +297,7 @@ void play(float gamespeed){
 			playerjumping=0;
 			playeryposmov-=0.01f*gamespeed;
 			/* //Danyal commented this to remove jumping from keyboard mode
-			if(keystate[SDLK_SPACE]){
+			if(keystate[SDL_SCANCODE_SPACE]){
 				playeryposmov=0.65f;
 				playerjumping=1;
 			}
@@ -312,7 +305,7 @@ void play(float gamespeed){
 		}else if(playerjumping){
 			playeryposmov-=(0.03f-playeryposmov*0.08f)*gamespeed;
 			
-			if(keystate[SDLK_SPACE] && playeryposmov>0.1)
+			if(keystate[SDL_SCANCODE_SPACE] && playeryposmov>0.1)
 				playerjumping=1;
 			else
 				playerjumping=0;

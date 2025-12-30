@@ -37,15 +37,19 @@ void loadtiles(){
 	char filename[256];
 
 	// preparing
+	printf("Calling dashprepdraw\n");
 	dashprepdraw();
+	printf("Calling dashdrawbutton\n");
 	dashdrawbutton(10,10,20,20,1);
 
-
 	//init progress bar
+	printf("Calling init_progressbar\n");
 	init_progressbar();
 
 	//setup each tile
+	printf("Starting tile loop, count: %d\n", worldtilecount);
 	for(int a=0; a<worldtilecount; a++){
+		printf("Loading tile %d\n", a);
 		//get the file name
 		sprintf_s(filename,"%s%i%s","Media/worldtiles/",a,".obj");
 		//load the file

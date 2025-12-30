@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string>
 
-#include <GL/glew.h>
-#include <GL/glut.h>
+// #include <GL/glew.h> 
+// #include <GL/glut.h>
 
 
 double dyneye = 0.05;
@@ -173,6 +173,7 @@ void initShaders(string vertexShader, string fragmentShader)
 			error(errorlog);
 			exit(13);
 		}
+		printf("Shader Program Linked Successfully\n");
 
 		glValidateProgram(shader);
 		glGetProgramiv(shader, GL_VALIDATE_STATUS, &success);
@@ -247,18 +248,23 @@ void initFBO(int screenWidth, int screenHeight)
     // initialize color texture
     glBindTexture(GL_TEXTURE_2D, colorTextureID);                                                                  
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);                               
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight, 0,GL_RGBA, GL_INT, NULL); 
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, screenWidth, screenHeight, 0,GL_RGBA, GL_UNSIGNED_BYTE, NULL); 
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,GL_TEXTURE_2D, colorTextureID, 0);
 
     // initialize depth renderbuffer
     glBindRenderbuffer(GL_RENDERBUFFER, depthRenderBufferID);                               
-    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, screenWidth, screenHeight);
+    glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, screenWidth, screenHeight);
     glFramebufferRenderbuffer(GL_FRAMEBUFFER,GL_DEPTH_ATTACHMENT,GL_RENDERBUFFER, depthRenderBufferID); 
 
-	if(glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+	glDrawBuffer(GL_COLOR_ATTACHMENT0);
+	glReadBuffer(GL_COLOR_ATTACHMENT0);
+
+	GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+	printf("FBO Status: 0x%x (Width: %d, Height: %d)\n", status, screenWidth, screenHeight);
+	if(status != GL_FRAMEBUFFER_COMPLETE)
 	{
 		error("could not create frame buffer");
 		exit(1);
@@ -301,46 +307,45 @@ void renderToScreen()
 
 static void RenderScene()
 {
-    if (vrmode) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glMatrixMode(GL_PROJECTION);
-        glLoadIdentity();
-        glMatrixMode(GL_MODELVIEW);
-        glLoadIdentity();
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
 
-        beginOffScreenRenderPass();
+	if (usehmd) {
+		beginOffScreenRenderPass();
 
-        glEnable(GL_SCISSOR_TEST);
+		glEnable(GL_SCISSOR_TEST);
 
-        //render left half
-        glViewport(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
-        glScissor(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
-        
-        drawworld(Left);
-    //	drawhud();
+		//render left half
+		glViewport(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
+		glScissor(eye_offset, 0, (int)((screenw/2)-eye_offset), screenh);
+		
+		drawworld(Left);
+	//	drawhud();
 
-        glDisable(GL_SCISSOR_TEST);
+		glDisable(GL_SCISSOR_TEST);
 
-        glEnable(GL_SCISSOR_TEST);
-        //render right half
-        glViewport((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
-        glScissor((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
-        drawworld(Right);
-    //	drawhud();
+		glEnable(GL_SCISSOR_TEST);
+		//render right half
+		glViewport((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
+		glScissor((int)screenw/2, 0, (int)((screenw/2)-eye_offset), screenh);
+		drawworld(Right);
+	//	drawhud();
 
-        glDisable(GL_SCISSOR_TEST);
+		glDisable(GL_SCISSOR_TEST);
 
-        //apply post distortion via shaders
-        glViewport(0, 0, screenw, screenh);
-        renderToScreen();
+		//apply post distortion via shaders
+		glViewport(0, 0, screenw, screenh);
+		renderToScreen();
+	} else {
+		glViewport(0, 0, screenw, screenh);
+		drawworld(Left);
+	}
 
-        glDisable(GL_SCISSOR_TEST);
-    } else {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glViewport(0, 0, screenw, screenh);
-        drawworld(Left); // Use Left (or similar) as the "center" camera for now
-    }
+	glDisable(GL_SCISSOR_TEST);
 }
 
 void load_OVR(void){

@@ -29,7 +29,8 @@ void dashtime(){
 	dash_gametime+=dash_timehaspast;
 
 	//calculate the frame rate
-	dash_framerate=1000.f/(float)dash_timehaspast;
+	if(dash_timehaspast > 0)
+		dash_framerate=1000.f/(float)dash_timehaspast;
 
 	//get the time and date
 	time_t now;
@@ -37,7 +38,7 @@ void dashtime(){
 	dash_time = localtime(&now);
 
 	//get the date in a char array text format
-	sprintf_s(dash_composedtext_date,"%s%s%s%s%s%s%d",
+	sprintf(dash_composedtext_date,"%s%s%s%s%s%s%d",
 			dash_wday[dash_time->tm_wday],
 			" ",
 			dash_month[dash_time->tm_mon],
@@ -48,28 +49,12 @@ void dashtime(){
 			);
 
 	//get the time in a char array text format
-	strcpy_s(dash_composedtext_time,"");
-	if(dash_time->tm_hour>12){
-		sprintf_s(dash_composedtext_time,"%s%d",dash_composedtext_time,dash_time->tm_hour-12);
-	}else{
-		if(dash_time->tm_hour==0){
-			sprintf_s(dash_composedtext_time,"%s%d",dash_composedtext_time,12);
-		}else{
-			sprintf_s(dash_composedtext_time,"%s%d",dash_composedtext_time,dash_time->tm_hour);
-		}
-	}
-	strcat_s(dash_composedtext_time,":");
-	if(dash_time->tm_min<10)
-		strcat_s(dash_composedtext_time,"0");
-	sprintf_s(dash_composedtext_time,"%s%d",dash_composedtext_time,dash_time->tm_min);
-	strcat_s(dash_composedtext_time,":");
-	if(dash_time->tm_sec<10)
-		strcat_s(dash_composedtext_time,"0");
-	sprintf_s(dash_composedtext_time,"%s%d",dash_composedtext_time,dash_time->tm_sec);
-	if(dash_time->tm_hour>11){
-		strcat_s(dash_composedtext_time," PM");
-	}else{
-		strcat_s(dash_composedtext_time," AM");
-	}
+    int hour = dash_time->tm_hour;
+    const char* ampm = " AM";
+    if(hour == 0) hour = 12;
+    else if(hour == 12) { ampm = " PM"; }
+    else if(hour > 12) { hour -= 12; ampm = " PM"; }
+
+    sprintf(dash_composedtext_time, "%d:%02d:%02d%s", hour, dash_time->tm_min, dash_time->tm_sec, ampm);
 
 }

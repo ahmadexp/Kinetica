@@ -19,15 +19,8 @@ bool autoexit=0;
 bool showinfo=1;
 bool usejoystick=0;
 
-#ifndef _WIN32
-// SDL2 includes joystick in SDL.h usually, but ensuring:
-#include <SDL2/SDL_joystick.h>
-#endif
-
 #ifdef _WIN32
 JOYINFO joystick;
-#else
-SDL_Joystick *joystick = NULL;
 #endif
 
 int collectablesfound=0;
@@ -125,9 +118,11 @@ void projectsetup()
 	glClear(GL_COLOR_BUFFER_BIT|GL_DEPTH_BUFFER_BIT);
 
 	loadtiles();
+	printf("Tiles Loaded\n");
 
 	//load entities
 	loadentities();
+	printf("Entities Loaded\n");
 
 	//clean up
 	genworldgrid_cleanup();
@@ -140,6 +135,7 @@ void projectsetup()
 
 	//buildings
 	genworldgrid_building();
+	printf("World Grid Generated\n");
 
 	//danyal
 	//load player mesh
@@ -152,6 +148,7 @@ void projectsetup()
 		playertexturearray,
 		playernormalarray,
 		playervertexcount,1.0);
+	printf("Player Model Loaded\n");
 
 	//rig the texture coordinates
 	for(int b=0; b<playervertexcount/3; b++){

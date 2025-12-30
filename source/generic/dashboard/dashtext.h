@@ -18,7 +18,7 @@ void setupdashtext(){
 	}
 }
 
-void dashtext(int posx,int posy,char* text){
+void dashtext(int posx,int posy,const char* text){
 
 	dashprepdraw();
 	for(int a=0;a<(signed)strlen(text);a++){
@@ -29,12 +29,12 @@ void dashtext(int posx,int posy,char* text){
 	
 }
 
-void dashtextcenter(int posx,int posy,char* text){
+void dashtextcenter(int posx,int posy,const char* text){
 	posx-=(int)((float)((signed)strlen(text))*10.f*0.5f);
 	dashtext(posx,posy,text);
 }
 
-void dashtextright(int posx,int posy,char* text){
+void dashtextright(int posx,int posy,const char* text){
 	posx-=(int)((float)((signed)strlen(text))*10.f);
 	dashtext(posx,posy,text);
 }

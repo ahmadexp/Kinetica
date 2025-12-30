@@ -1,6 +1,6 @@
 void drawline(int x1,int y1,int x2,int y2,int thickness,SDL_Surface *surface,Uint32 pixel){
 
-	SDL_Rect drawrect={0,0,(Uint16)thickness,(Uint16)thickness};
+	SDL_Rect drawrect={0,0,static_cast<Uint16>(thickness),static_cast<Uint16>(thickness)};
 	x1-=(int)floor((float)thickness*0.5);
 	y1-=(int)floor((float)thickness*0.5);
 	x2-=(int)floor((float)thickness*0.5);

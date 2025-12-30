@@ -9,8 +9,6 @@ void filtersurface(
 	bool grayscale,
 	int rdiff,int gdiff,int bdiff){
 
-	// Unused and broken in SDL2 port
-	/*
 	if(source->format->BitsPerPixel==16){
 		Uint32 color;
 		Uint16* pPosition=(Uint16*)screen->pixels;
@@ -92,6 +90,5 @@ void filtersurface(
 				SDL_MapRGB(dest->format,
 				dashrgb1[x][y][0],dashrgb1[x][y][1],dashrgb1[x][y][2]));
 	}
-	*/
 
 }

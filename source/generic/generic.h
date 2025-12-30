@@ -3,8 +3,20 @@
 //#define NO_SDL_GLEXT
 bool useshaders = true;
 
+#ifdef _WIN32
 #include <GL/glew.h>
 #include <GL/glut.h>
+#else
+#ifdef __APPLE__
+#include <GL/glew.h>
+#include <GLUT/glut.h>
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
+#include <GL/glew.h>
+#include <GL/glut.h>
+#endif
+#endif
 
 const float PI=3.14159265f;
 const float degreesinradian=360/(2*PI); 
@@ -38,19 +50,24 @@ bool shading_enabled = false;
 
 #ifdef _WIN32
 #define uglGetProcAddress(x) wglGetProcAddress(x)
-#include <windows.h>
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
 #else
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <unistd.h>
+// On Mac/Linux, standard GL functions are usually linked directly or loaded differently (e.g. glX). 
+// For now, define as NULL or proper loader if needed.
+#define uglGetProcAddress(x) NULL 
 #endif
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_opengl.h>
+
+extern SDL_Window* window;
+extern SDL_GLContext gl_context;
+
 #include <stdio.h>
-#include "../include/compat.h"
 #include <math.h>
 #include <time.h>
 #include <vector>
@@ -65,16 +82,19 @@ using std::ifstream;
 #include <cstdlib>
 #include <string>
 
-#include <stdlib.h>
-#include <string.h>
 #ifdef _WIN32
 #include <malloc.h>
-#elif defined(__APPLE__)
-#include <malloc/malloc.h>
+#else
+#include <stdlib.h>
+// Compatibility macros for MSVC secure functions
+#define sprintf_s(buf, fmt, ...) sprintf(buf, fmt, ##__VA_ARGS__)
+#define strcpy_s(dst, src) strcpy(dst, src)
+#define strcat_s(dst, src) strcat(dst, src)
 #endif
 
-#ifdef _WIN32
 //to read the joystick playing wave clips 
+#ifdef _WIN32
+#include <Windows.h>
 #include <MMSystem.h>
 #pragma comment(lib,"Winmm.lib")
 #endif
@@ -83,7 +103,7 @@ using std::ifstream;
 
 GLuint cube_map_texture_ID;
 
-#include "sky/skybox.h"
+#include "skybox.h"
 //SKYBOX * skybox; 
 
 //super generic
@@ -99,6 +119,9 @@ GLuint cube_map_texture_ID;
 //3DMath.h is already included from within spherebumpmesh.h
 //#include "3DMath.h"
 #include "spherebumpmesh.h"
+//specific to OpenGL
+#include "opengl/loadtexture.h"
+
 #include "loadobj.h"
 #include "lodepng.h"
 #include "loadbmp.h"
@@ -118,9 +141,6 @@ GLuint cube_map_texture_ID;
 #include "sdldraw/filtersurface.h"
 #include "sdldraw/rotoscale.h"
 #include "sdldraw/savesurface.h"
-
-//specific to OpenGL
-#include "opengl/loadtexture.h"
 
 //the dashboard and related functions
 #include "dashboard/dashsetup.h"

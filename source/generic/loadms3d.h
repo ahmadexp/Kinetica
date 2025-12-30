@@ -1,6 +1,5 @@
 
-#include "../projectspecific/ms3d/mathlib.cpp"
-#include "../projectspecific/ms3d/msModel.cpp"
+
 #include "../projectspecific/ms3d/mathlib.h"
 #include "../projectspecific/ms3d/msModel.h"
 msModel playerms3dmodel;

@@ -23,12 +23,7 @@ void dashprepdraw(){
 	
 	set2dcamera(0,screenh,0,screenw);
 	glEnable(GL_TEXTURE_2D);
-	glDisable(GL_LIGHTING);
-	glDisable(GL_FOG);
-	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_ALPHA_TEST);
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
@@ -56,9 +51,7 @@ void dashdonedraw(){
 
 void dashsetup(){
 
-	SDL_Surface *tempsurface = IMG_Load("Media/dashboard.png");
-    if(!tempsurface) exit(1);
-
+	SDL_Surface *tempsurface = IMG_LoadOptimizeAlpha("Media/dashboard.png");
 	dash_sprite = SDL_CreateRGBSurface(
 		tempsurface->flags,
 		//rounduptopowof2(tempsurface->w),
@@ -74,10 +67,8 @@ void dashsetup(){
 	//dash_sprite = SDL_DisplayFormatAlpha( dash_sprite );
 	//SDL_SetAlpha(tempsurface,SDL_SRCALPHA,255);
 	//SDL_SetAlpha(dash_sprite,SDL_SRCALPHA,255);
-	SDL_SetSurfaceBlendMode(tempsurface, SDL_BLENDMODE_BLEND);
-    SDL_SetSurfaceAlphaMod(tempsurface, 255);
-    SDL_SetSurfaceBlendMode(dash_sprite, SDL_BLENDMODE_BLEND);
-    SDL_SetSurfaceAlphaMod(dash_sprite, 255);
+	SDL_SetSurfaceRLE(tempsurface, 1);
+	SDL_SetSurfaceRLE(dash_sprite, 1);
 	apply_surface(0,0,tempsurface,dash_sprite,NULL);
 	SDL_FreeSurface(tempsurface);
 	dash_texture=maketexturefromsurface(dash_sprite,0);

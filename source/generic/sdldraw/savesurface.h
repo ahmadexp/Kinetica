@@ -7,7 +7,7 @@ void SDL_SavePNG(SDL_Surface *surfacetosave,char* filename){
 	
 	Uint32 color=0;
 
-	SDL_PixelFormat *fmt = surfacetosave->format;
+	SDL_PixelFormat *fmt = screen->format;
 	Uint32 rmask=fmt->Rmask,rshift=fmt->Rshift,rloss=fmt->Rloss;
 	Uint32 gmask=fmt->Gmask,gshift=fmt->Gshift,gloss=fmt->Gloss;
 	Uint32 bmask=fmt->Bmask,bshift=fmt->Bshift,bloss=fmt->Bloss;

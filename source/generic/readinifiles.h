@@ -37,9 +37,11 @@ float readfloatfromini(char* varname){
 		for(int a=0;a<inilinecount;a++){
 			if(strncmp(inidata[a],text,(signed)strlen(text))==0){
 				char value[256];
-				for(int b=0;b<(signed)strlen(inidata[a])-(signed)strlen(text);b++){
+				int b=0;
+				for(;b<(signed)strlen(inidata[a])-(signed)strlen(text);b++){
 					value[b]=inidata[a][strlen(text)+b];
 				}
+				value[b]='\0';
 				var=(float)atof(value);
 			}
 		}

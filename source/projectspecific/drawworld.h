@@ -110,15 +110,16 @@ void drawworld(Eye LorR){
 
 	//setup the camera
 	//set3dcamera(camxpos,camypos,camzpos,-camxang,camyang+90*radiansindegree,camzang,45,4/3); //screena);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	// glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); // Removed redundant clear
 	glLoadIdentity();
 
 	//set3dcamera(playerxpos, playerypos, playerzpos, 0, nav_camyang, 0, 45, 4/3);
-	float eyedist=dyndist/2;
-	if(LorR==Left)
-		set3dcamera(camxpos-(cos(camyang)*eyedist),camypos,camzpos-(sin(camyang)*eyedist),camxang,camyang,camzang,90,1);
+	float eyedist=usehmd ? (dyndist/2) : 0;
+	float aspect = usehmd ? 1.0f : screena;
+	if(!usehmd || LorR==Left)
+		set3dcamera(camxpos-(cos(camyang)*eyedist),camypos,camzpos-(sin(camyang)*eyedist),camxang,camyang,camzang,fov,aspect);
 	else
-		set3dcamera(camxpos+(cos(camyang)*eyedist),camypos,camzpos+(sin(camyang)*eyedist),camxang,camyang,camzang,90,1);
+		set3dcamera(camxpos+(cos(camyang)*eyedist),camypos,camzpos+(sin(camyang)*eyedist),camxang,camyang,camzang,fov,aspect);
 	//prep for drawing
 	if(usetextures==1)glEnable(GL_TEXTURE_2D);
 	glEnableClientState(GL_VERTEX_ARRAY);

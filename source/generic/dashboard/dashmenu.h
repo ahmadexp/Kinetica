@@ -25,9 +25,9 @@ int helpdashmenu(){
 	y+=35;
 	dashtext(x-150,y-51/2,"Use the following keys to:");
 	y+=30;
-	dashtext(x-150,y-51/2,"1 Decrease the view range");
+	dashtext(x-150,y-51/2,"1 Decrease the FOV");
 	y+=20;
-	dashtext(x-150,y-51/2,"2 Increase the view range");
+	dashtext(x-150,y-51/2,"2 Increase the FOV");
 	y+=20;
 	dashtext(x-150,y-51/2,"3 Texture mode ON/OFF");
 	y+=20;

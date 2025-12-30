@@ -8,6 +8,7 @@ const int maxfacecount=10000;
 int loadedface[maxfacecount][9];
 
 void loadobj(char* filename,float*& vertexarray,float*& texturearray,float*& normalarray,int &outputarraysize,float scale){
+	printf("Loading OBJ: %s\n", filename);
 
 	int vertexcount=0;
 	int texturecount=0;
@@ -15,6 +16,14 @@ void loadobj(char* filename,float*& vertexarray,float*& texturearray,float*& nor
 	int facecount=0;
 	ifstream indata;
 	indata.open(filename);
+	if (!indata.is_open()) {
+		printf("Error: Could not open OBJ file %s\n", filename);
+		vertexarray = NULL;
+		texturearray = NULL;
+		normalarray = NULL;
+		outputarraysize = 0;
+		return;
+	}
 	char temptext[500];
 	while(indata.good()){
 		indata >> temptext;

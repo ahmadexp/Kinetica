@@ -94,9 +94,9 @@ bool dashbutton(int x, int y,int w,int h,bool center,bool clickable,char* text){
 
 void init_progressbar(void){
 
-	spritesheettexture=loadtexture((char*)"Media/spritesheettexture.png",mipmapping);
-	tilebrighttexture=loadtexture((char*)"Media/tilebrighttexture.png",mipmapping);
-	tiledarktexture=loadtexture((char*)"Media/tiledarktexture.png",mipmapping);
+	spritesheettexture=loadtexture((char*)"Media/spritesheettexture.png",false, false);
+	tilebrighttexture=loadtexture((char*)"Media/tilebrighttexture.png",false, false);
+	tiledarktexture=loadtexture((char*)"Media/tiledarktexture.png",false, false);
 
 }
 
