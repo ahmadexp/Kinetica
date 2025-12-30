@@ -48,14 +48,17 @@ You can modify the following parameters in `settings.ini`:
 - GLEW, OpenGL
 - Ninja (preferred build system)
 
-### Compilation
-```bash
-# Using Ninja
-ninja -C build
+### Building the Project
 
-# Running the game
-./build/kinetica
-```
+1.  **Configure the build:**
+    ```bash
+    meson setup build
+    ```
+
+2.  **Compile:**
+    ```bash
+    meson compile -C build
+    ```
 
 ## 📂 Project Structure
 - `/source`: Core engine and game logic.
