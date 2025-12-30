@@ -1,8 +1,8 @@
-# Kinetica 0.6: The Virtual House
+# Kinetica: The Virtual House
 
 A high-performance 3D engine and game built using C++, OpenGL, and SDL2, designed with stereoscopic VR (HMD) support and cross-platform compatibility.
 
-## 🚀 Features
+## Features
 
 - **Advanced 3D Rendering:** Optimized tile-based world system using OpenGL 2.1.
 - **Dynamic Assets:** Loads models (OBJ, MS3D) and textures (BMP, PNG) with automatic platform-specific color correction.
@@ -11,7 +11,7 @@ A high-performance 3D engine and game built using C++, OpenGL, and SDL2, designe
 - **Custom Physics:** Includes collision detection, gravity, and a "Ghost Mode" for libre navigation.
 - **Configurable:** Fully customizable via `settings.ini` for resolution, FOV, VR mode, and graphical fidelity.
 
-## 🕹️ Controls
+## Controls
 
 | Key | Action |
 | :--- | :--- |
@@ -30,7 +30,7 @@ A high-performance 3D engine and game built using C++, OpenGL, and SDL2, designe
 | **G** | Toggle GPS Minimap |
 | **Esc / Q** | Open Menu / Quit |
 
-## 🛠️ Configuration (`settings.ini`)
+## Configuration (`settings.ini`)
 
 You can modify the following parameters in `settings.ini`:
 
@@ -40,7 +40,7 @@ You can modify the following parameters in `settings.ini`:
 - `fov`: Default Field of View (e.g., `60`).
 - `antialiasing` / `mipmapping`: Graphic quality toggles.
 
-## 🏗️ Building and Running
+## Building and Running
 
 ### Prerequisites
 - C++ Compiler (GCC/Clang)
@@ -63,3 +63,19 @@ ninja -C build
 - `/source/sky`: Skybox components.
 - `/Media`: Textures, models, and audio assets.
 - `k.vert` / `k.frag`: VR distortion shaders.
+
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
+
+You are free to:
+
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+Under the following terms:
+
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+NonCommercial — You may not use the material for commercial purposes.
+For full details, see: https://creativecommons.org/licenses/by-nc/4.0/
+
+As the project creator, I reserve the right to use this material commercially or under any other terms.
