@@ -74,3 +74,19 @@ You can modify the following parameters in `settings.ini`:
 - `/source/sky`: Skybox components.
 - `/Media`: Textures, models, and audio assets.
 - `k.vert` / `k.frag`: VR distortion shaders.
+
+## License
+
+This project is licensed under the Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
+
+You are free to:
+
+Share — copy and redistribute the material in any medium or format
+Adapt — remix, transform, and build upon the material
+Under the following terms:
+
+Attribution — You must give appropriate credit, provide a link to the license, and indicate if changes were made.
+NonCommercial — You may not use the material for commercial purposes.
+For full details, see: https://creativecommons.org/licenses/by-nc/4.0/
+
+As the project creator, I reserve the right to use this material commercially or under any other terms.
