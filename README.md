@@ -1,8 +1,10 @@
-# Kinetica 0.6: The Virtual House
+# Kinetica: The Virtual House
 
 A high-performance 3D engine and game built using C++, OpenGL, and SDL2, designed with stereoscopic VR (HMD) support and cross-platform compatibility.
 
-## 🚀 Features
+<img width="803" height="627" alt="Screenshot 2025-12-30 at 7 30 40 PM" src="https://github.com/user-attachments/assets/5dc210d2-b13a-4918-9782-e3cd98e310f3" />
+
+## Features
 
 - **Advanced 3D Rendering:** Optimized tile-based world system using OpenGL 2.1.
 - **Dynamic Assets:** Loads models (OBJ, MS3D) and textures (BMP, PNG) with automatic platform-specific color correction.
@@ -11,7 +13,7 @@ A high-performance 3D engine and game built using C++, OpenGL, and SDL2, designe
 - **Custom Physics:** Includes collision detection, gravity, and a "Ghost Mode" for libre navigation.
 - **Configurable:** Fully customizable via `settings.ini` for resolution, FOV, VR mode, and graphical fidelity.
 
-## 🕹️ Controls
+## Controls
 
 | Key | Action |
 | :--- | :--- |
@@ -30,7 +32,7 @@ A high-performance 3D engine and game built using C++, OpenGL, and SDL2, designe
 | **G** | Toggle GPS Minimap |
 | **Esc / Q** | Open Menu / Quit |
 
-## 🛠️ Configuration (`settings.ini`)
+## Configuration (`settings.ini`)
 
 You can modify the following parameters in `settings.ini`:
 
@@ -40,7 +42,7 @@ You can modify the following parameters in `settings.ini`:
 - `fov`: Default Field of View (e.g., `60`).
 - `antialiasing` / `mipmapping`: Graphic quality toggles.
 
-## 🏗️ Building and Running
+## Building and Running
 
 ### Prerequisites
 - C++ Compiler (GCC/Clang)
